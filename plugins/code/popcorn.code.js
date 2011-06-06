@@ -142,12 +142,12 @@
       website: 'http://vocamus.net/dave'
     },
     options: {
-      start: {elem:'input', type:'text', label:'In'},
-      end: {elem:'input', type:'text', label:'Out'},
+      start: {elem:'input', type:'text', label:'In', default: 0},
+      end: {elem:'input', type:'text', label:'Out', default: 0},
       // TODO: how to deal with functions, eval strings?
-      onStart: {elem:'input', type:'text', label:'onStart'},
-      onFrame: {elem:'input', type:'text', label:'onFrame'},
-      onEnd: {elem:'input', type:'text', label:'onEnd'}
+      onStart: {elem:'input', type:'function', label:'onStart', default: function(){}},
+      onFrame: {elem:'input', type:'function', label:'onFrame'},
+      onEnd: {elem:'input', type:'function', label:'onEnd', default: function (){}}
     }
   });
 })( Popcorn );

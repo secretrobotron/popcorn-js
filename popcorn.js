@@ -876,6 +876,7 @@
         options.end = this.duration() || Number.MAX_VALUE;
       }
 
+
       //  If a _setup was declared, then call it before
       //  the events commence
       if ( "_setup" in setup && typeof setup._setup === "function" ) {
@@ -920,6 +921,15 @@
 
     //  Assign new named definition
     plugin[ name ] = function( options ) {
+      var manifest = Popcorn.manifest[ name ];
+      if ( manifest ) {
+        var manifestOptions = manifest.options;
+        for ( var entry in manifestOptions ) {
+          if ( manifestOptions[entry].default && ( !( entry in options ) || options[entry] === undefined )){
+            options[entry] = manifestOptions[entry].default;
+          } //if
+        } //for
+      } //if
       return pluginFn.call( this, isfn ? definition.call( this, options ) : definition,
                                   options );
     };

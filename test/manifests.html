@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script type="text/javascript" src="../popcorn.js"></script>
+    <script type="text/javascript" src="../plugins/code/popcorn.code.js"></script>
+    <script type="text/javascript">
+      document.addEventListener('DOMContentLoaded', function (e) {
+        var popcorn = Popcorn('#vid');
+        var infoDiv = document.getElementById('info');
+
+        function createEntry(manifest, inputOptions) {
+          var manifestData = document.createElement('p');
+          var title = document.createElement('span');
+          var input = document.createElement('input');
+          title.innerHTML = manifest;
+          input.type = 'button';
+          input.value = 'create';
+          var output = document.createElement('p');
+          input.addEventListener('click', function (e) {
+            try {
+              popcorn[manifest](inputOptions);
+            }
+            catch (e) {
+              var outputData = document.createElement('p');
+              var errorData = document.createElement('span');
+              errorData.style.fontWeight = 'bold';
+              errorData.innerHTML = e;
+              outputData.innerHTML = new Date() + ': ';
+              outputData.appendChild(errorData);
+              output.appendChild(outputData);
+            } //try
+          }, false);
+          manifestData.appendChild(title);
+          manifestData.appendChild(input);
+          manifestData.appendChild(output);
+          infoDiv.appendChild(manifestData);
+        } //createEntry
+
+        createEntry('code', {
+          onFrame: function (e) {
+            console.log('beep');
+          },
+        });
+
+      }, false);
+    </script>
+    <style>
+      p p {
+        padding-left: 2px;
+      }
+      span {
+        padding-right: 2px;
+      }
+    </style>
+  </head>
+  <body>
+    <video width="30%" id="vid" controls preload="auto" autobuffer>
+      <source src="trailer.ogv" />
+    </video>
+    <div id="info" style="float: right; width: 68%">
+      <p>Manifests:</p>
+    </div>
+  </body>
+</html>
