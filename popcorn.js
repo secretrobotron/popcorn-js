@@ -390,6 +390,18 @@
     }
   });
 
+  Popcorn.replace = function( targetStr, inputStrs, outputStrs ) {
+    var newStr = "" + targetStr;
+    for ( var i=0, l=inputStrs.length; i < l; ++i ) {
+      newStr.replace( new RegExp( inputStrs[ i ], "g" ), outputStrs[ i ] );
+    }
+    return newStr;
+  };
+
+  Popcorn.replaceTags = function( str ) {
+    return Popcorn.replace( str, [ "<", ">" ], [ "&lt;", "&gt;" ] );
+  };
+
   //  Memoized GUID Counter
   Popcorn.guid.counter = 1;
 

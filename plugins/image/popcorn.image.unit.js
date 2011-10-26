@@ -85,3 +85,46 @@ test( "Popcorn Image Plugin", function() {
 
   popped.volume( 0 ).play();
 });
+
+test( "Image input cleansing", function() {
+
+  var popped = Popcorn( "#video" ),
+      expects = 2,
+      count = 0,
+      imagediv = document.getElementById( "imagediv" ),
+      source = "https://www.drumbeat.org/media//images/drumbeat-logo-splash.png";
+
+  expect( expects );
+
+  function plus() {
+    if ( ++count === expects ) {
+      start();
+    }
+  }
+
+  stop();
+
+  imagediv.innerHTML = "";
+
+  popped.image({
+    start: 9,
+    end: 11,
+    href: "    javascript:window.epic='fail';",
+    src: source,
+    text: "<div><script><test><tests /></test></script></div>",
+    target: "imagediv"
+  });
+
+  popped.exec( 10, function() {
+    var href = imagediv.getElementsByTagName( "a" )[ 0 ].href;
+    ok( href === window.location.href, "href javascript was removed" );
+    plus();
+    ok( imagediv.getElementsByTagName( "div" )[ 0 ].textContent, 
+        "&lt;div&gt;&lt;script&gt;&lt;test&gt;&lt;tests /&gt;&lt;/test&gt;&lt;/script&gt;&lt;/div&gt;",
+        "image text is tagless" );
+    plus();
+  });
+
+  popped.volume( 0 ).play( 0 );
+
+});

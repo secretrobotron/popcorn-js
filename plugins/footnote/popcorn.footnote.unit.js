@@ -100,3 +100,43 @@ test( "Popcorn Text Plugin", function() {
     popped.pause();
   }).currentTime( 5 ).play();
 });
+
+test( "Footnote input cleansing", function() {
+
+   var popped = Popcorn( "#video" ),
+      expects = 1,
+      count = 0,
+      setupId,
+      textdiv = document.getElementById( "textdiv" );
+
+  expect( expects );
+
+  function plus() {
+    if ( ++count===expects ) {
+      start();
+    }
+  }
+
+  textdiv.innerHTML = "";
+
+  plus();
+
+  popped.text({
+    start: 5,
+    end: 6,
+    text: "<div><script><strange><text><is></strange></script></div>",
+    target: "textdiv"
+  });
+
+  stop();
+
+  popped.exec( 5, function() {
+
+    equal( textdiv.children[ 0 ].innerHTML, "&lt;div&gt;&lt;script&gt;&lt;strange&gt;&lt;text&gt;&lt;is&gt;&lt;/strange&gt;&lt;/script&gt;&lt;/div&gt;", "Footnote text is clean." );
+    plus();
+
+    popped.pause();
+
+  }).currentTime( 5 ).play();
+
+}); 

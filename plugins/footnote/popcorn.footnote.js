@@ -61,7 +61,7 @@
 
       options._container = document.createElement( "div" );
       options._container.style.display = "none";
-      options._container.innerHTML  = options.text;
+      options._container.appendChild( document.createTextNode( Popcorn.replaceTags( options.text ) ) );
 
       if ( !target && Popcorn.plugin.debug ) {
         throw new Error( "target container doesn't exist" );

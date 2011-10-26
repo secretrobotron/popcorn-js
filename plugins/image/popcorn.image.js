@@ -86,7 +86,8 @@
           img.style.borderStyle = "none";
 
           if ( options.href ) {
-            options.link.href = options.href;
+            options.href = options.href.replace( /^\s+javascript:.*/g, "" );
+            options.link.href = options.href || "";
           }
 
           options.link.target = "_blank";
@@ -105,11 +106,14 @@
             zIndex: "10"
           });
 
-          divText.innerHTML = options.text || "";
+          var text = options.text || "";
+          text = Popcorn.replaceTags( text );
+          divText.appendChild( document.createTextNode( text ) );
           options.link.appendChild( divText );
           options.link.appendChild( img );
           divText.style.top = ( img.height / 2 ) - ( divText.offsetHeight / 2 ) + "px";
           options.link.style.display = "none";
+
         }, false );
 
         img.src = options.src;
