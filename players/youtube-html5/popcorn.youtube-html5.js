@@ -60,6 +60,8 @@
             autohide: setupOptions.autohide,
             autoplay: setupOptions.autoPlay,
             controls: setupOptions.controls,
+            modestbranding: setupOptions.modestbranding,
+            wmode: setupOptions.wmode, 
             enablejsapi: 1,
             loop: setupOptions.loop,
             origin: setupOptions.origin,
@@ -67,6 +69,9 @@
             start: setupOptions.start,
             theme: setupOptions.theme
           };
+
+      _media.readyState = 0; //NOTHING
+      _media.networkState = 0; //EMPTY
 
       function update() {
         var val = _youtube.getVolume() / 100;
@@ -80,6 +85,9 @@
           _media.dispatchEvent( "seeked" );
         } //if
         _media.dispatchEvent( "timeupdate" );
+        if ( _media.networkState !== 1 && _youtube.getVideoBytesLoaded() === _youtube.getVideoBytesTotal() ) {
+          _media.networkState = 1; //IDLE
+        } //if
       } //update
 
       function onPlayerReady( e ) {
@@ -129,6 +137,9 @@
         _media.volume = _startVolume;
 
         _volumeCheckInterval = setInterval( update, 10 );
+
+        _media.readyState = 1; //METADATA
+        _media.networkState = 2; //EMPTY
 
       } //onPlayerReady
 
